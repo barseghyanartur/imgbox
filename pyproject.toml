@@ -162,6 +162,7 @@ addopts = [
 ]
 testpaths = [
     "snapbox.py",
+    "test*.py",
     "*.rst",
     "**/*.rst",
 ]

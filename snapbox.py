@@ -1,13 +1,21 @@
 import tkinter as tk
-from tkinter import filedialog, messagebox, ttk
+from tkinter import colorchooser, filedialog, messagebox, ttk
 
 from PIL import Image, ImageDraw, ImageTk
 
+__title__ = "snapbox"
+__version__ = "0.1.1"
+__author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
+__copyright__ = "2024 Artur Barseghyan"
+__license__ = "MIT"
+__all__ = ("SnapBoxApp",)
 
-class RectangleApp:
+
+class SnapBoxApp:
     def __init__(self, root):
         self.root = root
         self.root.title("snapbox: Draw boxes over image")
+        self.tkimg = None
 
         # Style Configuration
         style = ttk.Style()
@@ -18,10 +26,14 @@ class RectangleApp:
             foreground="white",
             font=("Helvetica", 10),
         )
-        style.configure("TLabel", background="#f0f0f0", font=("Helvetica", 10))
+        style.configure(
+            "TLabel", background="#f0f0f0", font=("Helvetica", 10),
+        )
         style.configure("TEntry", font=("Helvetica", 10))
         style.configure("TCombobox", font=("Helvetica", 10))
+        style.configure("TFrame", background="#f0f0f0")
         style.configure("TLabelframe", background="#f0f0f0")
+        style.configure("TLabelframe.Label", background="#f0f0f0")
         style.map("TButton", background=[("active", "#555")])
 
         # Allow window to be resizable
@@ -44,56 +56,119 @@ class RectangleApp:
         # Setup resize behavior
         self.root.bind("<Configure>", self.resize_image)
 
+        # Zoom controls
+        self.zoom_frame = ttk.Frame(root)
+        self.zoom_frame.grid(
+            row=2, column=0, columnspan=3, sticky="ew", padx=10, pady=10
+        )
+        # Configure columns for centering
+        self.zoom_frame.columnconfigure(0, weight=1)
+        self.zoom_frame.columnconfigure(3, weight=1)
+
+        self.zoom_in_button = ttk.Button(
+            self.zoom_frame,
+            text="Zoom In",
+            command=self.zoom_in,
+            padding=(10, 5),
+        )
+        self.zoom_in_button.grid(row=2, column=1, sticky="ew", padx=5)
+
+        self.zoom_out_button = ttk.Button(
+            self.zoom_frame,
+            text="Zoom Out",
+            command=self.zoom_out,
+            padding=(10, 5),
+        )
+        self.zoom_out_button.grid(row=2, column=2, sticky="ew", padx=5)
+
+        # Rectangle specification frame
+        self.rect_frame = ttk.LabelFrame(root, text="Add/Edit Rectangle")
+        self.rect_frame.grid(
+            row=3, column=0, columnspan=3, sticky="ew", padx=10, pady=10
+        )
+
+        # Coordinates frame
+        self.coord_frame = ttk.LabelFrame(self.rect_frame, text="Coordinates")
+        self.coord_frame.grid(row=0, column=0, padx=10, pady=10, sticky="ew")
+
         # Dropdown for selecting rectangle format
         self.format_var = tk.StringVar()
         self.format_choices = {
             "x, y, width, height",
-            "min_x, min_y, max_x, max_y",
+            "x_min, y_min, x_max, y_max",
         }
         self.format_var.set("x, y, width, height")  # default input format
         self.format_var.trace("w", self.update_labels)
 
         self.format_menu = ttk.Combobox(
-            root,
+            self.coord_frame,
             textvariable=self.format_var,
             values=list(self.format_choices),
             state="readonly",
         )
-        self.format_menu.grid(row=2, column=0, columnspan=2, sticky="ew")
-
-        # Rectangle specification frame
-        self.rect_frame = ttk.LabelFrame(root, text="Add/Edit Rectangle")
-        self.rect_frame.grid(
-            row=3, column=0, columnspan=3, sticky="ew", padx=10
-        )
+        self.format_menu.grid(row=0, column=0, sticky="ew")
 
         self.labels = ["X:", "Y:", "Width:", "Height:"]
         self.label_widgets = [
-            ttk.Label(self.rect_frame, text=label) for label in self.labels
+            ttk.Label(self.coord_frame, text=label) for label in self.labels
         ]
         self.coord_entries = [
-            ttk.Entry(self.rect_frame, width=10) for _ in range(4)
+            ttk.Entry(self.coord_frame, width=10) for _ in range(4)
         ]
 
         for i, (label, entry) in enumerate(
             zip(self.label_widgets, self.coord_entries)
         ):
-            label.grid(row=0, column=2 * i)
-            entry.grid(row=0, column=2 * i + 1)
+            label.grid(row=0, column=2 * i + 2)
+            entry.grid(row=0, column=2 * i + 3)
 
+        # Line properties frame
+        self.line_frame = ttk.LabelFrame(self.rect_frame, text="Line")
+        self.line_frame.grid(row=0, column=1, padx=10, pady=10, sticky="ew")
+
+        # Line thickness entry
+        ttk.Label(self.line_frame, text="Thickness:").grid(
+            row=0, column=0, sticky="w"
+        )
+        self.thickness_entry = ttk.Entry(self.line_frame, width=10)
+        self.thickness_entry.grid(row=0, column=1, sticky="w")
+        self.thickness_entry.insert(0, "2")  # Default value
+
+        # Color picker button
+        ttk.Label(self.line_frame, text="Color:").grid(
+            row=0, column=2, sticky="w"
+        )
+        self.color_button = ttk.Button(
+            self.line_frame, text="Choose Color", command=self.choose_color
+        )
+        self.color_button.grid(row=0, column=4, sticky="w")
+        self.color_display = ttk.Label(
+            self.line_frame,
+            text="      ",
+            background="#000000",
+            padding=(2, 2, 2, 2),
+        )
+        self.color_display.grid(row=0, column=3, sticky="w", padx=5)
+
+        # Add/Update Rectangle button
         self.add_button = ttk.Button(
             self.rect_frame,
             text="Add/Update Rectangle",
             command=self.add_update_rectangle,
         )
-        self.add_button.grid(row=0, column=8)
+        self.add_button.grid(row=0, column=2, padx=10, sticky="w")
 
         # Button to generate rectangles on the image
         self.generate_button = ttk.Button(
             root, text="Generate on Image", command=self.generate_rectangles
         )
         self.generate_button.grid(
-            row=4, column=0, columnspan=3, sticky="ew", pady=10
+            row=4,
+            column=0,
+            columnspan=3,
+            sticky="ew",
+            pady=10,
+            padx=10,
         )
 
         # Listbox for rectangles
@@ -105,28 +180,46 @@ class RectangleApp:
             relief="solid",
             font=("Helvetica", 10),
         )
-        self.listbox.grid(row=5, column=0, columnspan=2, sticky="ew", pady=10)
+        self.listbox.grid(
+            row=5, column=0, columnspan=2, sticky="ew", pady=10, padx=10
+        )
 
         self.delete_button = ttk.Button(
             root, text="Delete Selected", command=self.delete_rectangle
         )
-        self.delete_button.grid(row=5, column=2, sticky="ew")
+        self.delete_button.grid(row=5, column=2, sticky="ew", padx=10)
 
         self.rectangles = []
         self.img = None
         self.original_img = None
         self.tkimg = None
+        self.line_color = "#000000"  # Default color
+        self.zoom_factor = 1.0
+
+        # Drag functionality variables
+        self.drag_data = {"x": 0, "y": 0, "item": None}
+
+        # Bind mouse events for dragging
+        self.canvas.bind("<ButtonPress-1>", self.on_button_press)
+        self.canvas.bind("<B1-Motion>", self.on_mouse_drag)
+        self.canvas.bind("<ButtonRelease-1>", self.on_button_release)
 
     def update_labels(self, *args):
         format_choice = self.format_var.get()
         new_labels = ["X:", "Y:", "Width:", "Height:"]
         if format_choice == "x, y, width, height":
             new_labels = ["X:", "Y:", "Width:", "Height:"]
-        elif format_choice == "min_x, min_y, max_x, max_y":
-            new_labels = ["Min X:", "Min Y:", "Max X:", "Max Y:"]
+        elif format_choice == "x_min, y_min, x_max, y_max":
+            new_labels = ["X Min:", "Y Min:", "X Max:", "Y Max:"]
 
         for label_widget, new_label in zip(self.label_widgets, new_labels):
             label_widget.configure(text=new_label)
+
+    def choose_color(self):
+        color_code = colorchooser.askcolor(title="Choose color")[1]
+        if color_code:
+            self.line_color = color_code
+            self.color_display.configure(background=color_code)
 
     def load_image(self):
         file_path = filedialog.askopenfilename()
@@ -134,6 +227,7 @@ class RectangleApp:
             self.path_entry.delete(0, tk.END)
             self.path_entry.insert(0, file_path)
             self.original_img = Image.open(file_path)
+            self.zoom_factor = 1.0
             self.show_image(self.original_img)
 
     def show_image(self, img):
@@ -148,10 +242,10 @@ class RectangleApp:
             canvas_aspect_ratio = canvas_width / canvas_height
 
             if canvas_aspect_ratio > image_aspect_ratio:
-                new_height = canvas_height
+                new_height = int(canvas_height * self.zoom_factor)
                 new_width = int(new_height * image_aspect_ratio)
             else:
-                new_width = canvas_width
+                new_width = int(canvas_width * self.zoom_factor)
                 new_height = int(new_width / image_aspect_ratio)
 
             self.tkimg = ImageTk.PhotoImage(
@@ -164,23 +258,39 @@ class RectangleApp:
                 (canvas_height - new_height) // 2,
                 anchor="nw",
                 image=self.tkimg,
+                tags="image",
             )
 
     def resize_image(self, event=None):
         if self.tkimg:  # Only update if an image is loaded
             self.update_image_display()
 
+    def zoom_in(self):
+        self.zoom_factor *= 1.2
+        self.update_image_display()
+
+    def zoom_out(self):
+        self.zoom_factor /= 1.2
+        self.update_image_display()
+
     def add_update_rectangle(self):
         format_var = self.format_var.get()
         try:
             coords = [int(entry.get()) for entry in self.coord_entries]
-            rectangle = (coords, format_var)
-            self.listbox.insert(tk.END, f"{format_var}: {coords}")
+            thickness = int(self.thickness_entry.get())
+            color = self.line_color
+            rectangle = (coords, format_var, thickness, color)
+            self.listbox.insert(
+                tk.END,
+                f"{format_var}: {coords}, {thickness}px, {color}",
+            )
             self.rectangles.append(rectangle)
             self.clear_entries()
+            self.color_display.configure(background=color)  # Retain color
         except ValueError:
             messagebox.showerror(
-                "Error", "Please enter valid integers for rectangle dimensions."
+                "Error",
+                "Enter integers for box dimensions and thickness.",
             )
 
     def delete_rectangle(self):
@@ -189,7 +299,9 @@ class RectangleApp:
             self.listbox.delete(index)
             del self.rectangles[index]
         except Exception:
-            messagebox.showerror("Error", "Select a rectangle to delete.")
+            messagebox.showerror(
+                "Error", "Select a rectangle to delete.",
+            )
 
     def clear_entries(self):
         for entry in self.coord_entries:
@@ -197,26 +309,53 @@ class RectangleApp:
 
     def generate_rectangles(self):
         if self.original_img:
+            self.zoom_factor = 1.0
             temp_img = self.original_img.copy()
             draw = ImageDraw.Draw(temp_img)
-            for coords, format_var in self.rectangles:
+            for coords, format_var, thickness, color in self.rectangles:
                 if format_var == "x, y, width, height":
-                    x, y, width, height = coords
+                    x, y, width, height = map(int, coords)
                     draw.rectangle(
-                        [x, y, x + width, y + height], outline="red", width=2
+                        [x, y, x + width, y + height],
+                        outline=color,
+                        width=thickness,
                     )
-                elif format_var == "min_x, min_y, max_x, max_y":
-                    min_x, min_y, max_x, max_y = coords
+                elif format_var == "x_min, y_min, x_max, y_max":
+                    x_min, y_min, x_max, y_max = map(int, coords)
                     draw.rectangle(
-                        [min_x, min_y, max_x, max_y], outline="red", width=2
+                        [x_min, y_min, x_max, y_max],
+                        outline=color,
+                        width=thickness,
                     )
             self.show_image(temp_img)
+
+    def on_button_press(self, event):
+        # Save the current mouse position
+        self.drag_data["x"] = event.x
+        self.drag_data["y"] = event.y
+
+    def on_mouse_drag(self, event):
+        # Calculate the distance moved by the mouse
+        dx = event.x - self.drag_data["x"]
+        dy = event.y - self.drag_data["y"]
+
+        # Move the canvas
+        self.canvas.move("image", dx, dy)
+
+        # Update the drag data
+        self.drag_data["x"] = event.x
+        self.drag_data["y"] = event.y
+
+    def on_button_release(self, event):
+        # Reset the drag data
+        self.drag_data["x"] = 0
+        self.drag_data["y"] = 0
 
 
 def main():
     root = tk.Tk()
     root.geometry("800x600")  # Initial size of the window
-    app = RectangleApp(root)  # noqa
+    app = SnapBoxApp(root)  # noqa
     root.mainloop()
 
 
