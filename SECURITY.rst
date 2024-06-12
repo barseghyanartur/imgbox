@@ -9,7 +9,7 @@ Please report security issues by emailing Artur Barseghyan
 
 Supported Versions
 ------------------
-The two most recent ``fake.py`` release series receive security support.
+The two most recent ``SnapBox`` release series receive security support.
 It's recommended to use the latest version.
 
 .. code-block:: text
@@ -27,7 +27,7 @@ It's recommended to use the latest version.
 .. note::
 
     For example, during the development cycle leading to the release
-    of ``fake.py`` 0.17.x, support will be provided for ``fake.py`` 0.16.x.
+    of ``SnapBox`` 0.17.x, support will be provided for ``SnapBox`` 0.16.x.
 
-    Upon the release of ``fake.py`` 0.18.x, security support for ``fake.py``
+    Upon the release of ``SnapBox`` 0.18.x, security support for ``SnapBox``
     0.16.x will end.

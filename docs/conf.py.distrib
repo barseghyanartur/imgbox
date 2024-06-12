@@ -6,15 +6,15 @@ import sys
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath(".."))
 try:
-    import fake
+    import snapbox
 
-    version = fake.__version__
-    project = fake.__title__
-    copyright = fake.__copyright__
+    version = snapbox.__version__
+    project = snapbox.__title__
+    copyright = snapbox.__copyright__
 except ImportError:
     version = "0.1"
-    project = "fake"
-    copyright = "2023, Artur Barseghyan <artur.barseghyan@gmail.com>"
+    project = "snapbox"
+    copyright = "2024, Artur Barseghyan <artur.barseghyan@gmail.com>"
 
 # -- General configuration -----------------------------------------------------
 
@@ -126,7 +126,7 @@ html_static_path = ["_static"]
 # html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "fake.pydoc"
+htmlhelp_basename = "snapbox.pydoc"
 
 prismjs_base = "//cdnjs.cloudflare.com/ajax/libs/prism/1.29.0"
 
@@ -161,8 +161,8 @@ latex_elements = {
 latex_documents = [
     (
         "index",
-        "fake.py.tex",
-        "fake.py Documentation",
+        "snapbox.tex",
+        "SnapBox Documentation",
         "Artur Barseghyan \\textless{}artur.barseghyan@gmail.com"
         "\\textgreater{}",
         "manual",
@@ -197,8 +197,8 @@ latex_documents = [
 man_pages = [
     (
         "index",
-        "fake.py",
-        "fake.py Documentation",
+        "SnapBox",
+        "SnapBox Documentation",
         ["Artur Barseghyan <artur.barseghyan@gmail.com>"],
         1,
     )
@@ -216,12 +216,11 @@ man_pages = [
 texinfo_documents = [
     (
         "index",
-        "fake.py",
-        "fake.py Documentation",
+        "SnapBox",
+        "SnapBox Documentation",
         "Artur Barseghyan <artur.barseghyan@gmail.com>",
-        "fake.py",
-        "Minimalistic, standalone alternative fake data generator with no "
-        "dependencies.",
+        "SnapBox",
+        "Draw boxes over images.",
         "Miscellaneous",
     ),
 ]
@@ -239,7 +238,7 @@ texinfo_documents = [
 # -- Options for Epub output ---------------------------------------------------
 
 # Bibliographic Dublin Core info.
-epub_title = "fake.py"
+epub_title = "SnapBox"
 epub_author = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 epub_publisher = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 epub_copyright = "2023, Artur Barseghyan <artur.barseghyan@gmail.com>"
@@ -283,8 +282,8 @@ sys.setrecursionlimit(3000)
 rinoh_documents = [
     (
         "index",
-        "fake.py Documentation",
-        "fake.py",
+        "SnapBox Documentation",
+        "SnapBox",
         "Artur Barseghyan <artur.barseghyan@gmail.com>",
     )
 ]
