@@ -9,7 +9,7 @@ from snapbox import SnapBoxApp
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2024 Artur Barseghyan"
 __license__ = "MIT"
-__all__ = ("SnapBoxApp",)
+__all__ = ("TestSnapBoxApp",)
 
 
 class TestSnapBoxApp(unittest.TestCase):

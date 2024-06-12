@@ -1,5 +1,5 @@
 =======
-snapbox
+SnapBox
 =======
 .. External dependencies
 
@@ -9,7 +9,7 @@ snapbox
 
 .. Internal references
 
-.. _snapbox: https://github.com/barseghyanartur/snapbox/
+.. _SnapBox: https://github.com/barseghyanartur/snapbox/
 .. _Read the Docs: http://snapbox.readthedocs.io/
 .. _Contributor guidelines: https://snapbox.readthedocs.io/en/latest/contributor_guidelines.html
 

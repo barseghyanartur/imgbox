@@ -14,8 +14,9 @@ __all__ = ("SnapBoxApp",)
 class SnapBoxApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("snapbox: Draw boxes over image")
+        self.root.title("SnapBox: Draw boxes over image")
         self.tkimg = None
+        self.setup_menu()
 
         # Style Configuration
         style = ttk.Style()
@@ -27,7 +28,9 @@ class SnapBoxApp:
             font=("Helvetica", 10),
         )
         style.configure(
-            "TLabel", background="#f0f0f0", font=("Helvetica", 10),
+            "TLabel",
+            background="#f0f0f0",
+            font=("Helvetica", 10),
         )
         style.configure("TEntry", font=("Helvetica", 10))
         style.configure("TCombobox", font=("Helvetica", 10))
@@ -300,7 +303,8 @@ class SnapBoxApp:
             del self.rectangles[index]
         except Exception:
             messagebox.showerror(
-                "Error", "Select a rectangle to delete.",
+                "Error",
+                "Select a rectangle to delete.",
             )
 
     def clear_entries(self):
@@ -350,6 +354,68 @@ class SnapBoxApp:
         # Reset the drag data
         self.drag_data["x"] = 0
         self.drag_data["y"] = 0
+
+    def create_about_window(self):
+        about_window = tk.Toplevel(self.root)
+        about_window.title("About imgbox")
+        about_window.geometry("400x300")
+
+        tab_control = ttk.Notebook(about_window)
+
+        # About Tab
+        about_tab = ttk.Frame(tab_control)
+        tab_control.add(about_tab, text="About")
+        about_text = tk.Text(about_tab, height=10, width=50, wrap="word")
+        about_text.insert(
+            "end",
+            (
+                "SnapBox is a simple graphical tool for drawing rectangles "
+                "on images."
+            ),
+        )
+        about_text.config(state="disabled")
+        about_text.pack(expand=True, fill="both", padx=10, pady=10)
+
+        # Author Tab
+        author_tab = ttk.Frame(tab_control)
+        tab_control.add(author_tab, text="Author")
+        author_text = tk.Text(author_tab, height=10, width=50, wrap="word")
+        author_text.insert(
+            "end",
+            (
+                "Developed by Artur Barseghyan. For feedback and support, "
+                "see https://github.com/barseghyanartur/snapbox#support."
+            ),
+        )
+        author_text.config(state="disabled")
+        author_text.pack(expand=True, fill="both", padx=10, pady=10)
+
+        # License Tab
+        license_tab = ttk.Frame(tab_control)
+        tab_control.add(license_tab, text="License")
+        license_text = tk.Text(license_tab, height=10, width=50, wrap="word")
+        license_text.insert(
+            "end",
+            (
+                "This software is released under the MIT License. "
+                "See https://github.com/barseghyanartur/snapbox#license for"
+                "more information."
+            ),
+        )
+        license_text.config(state="disabled")
+        license_text.pack(expand=True, fill="both", padx=10, pady=10)
+
+        tab_control.pack(expand=True, fill="both")
+
+    def setup_menu(self):
+        menubar = tk.Menu(self.root)
+        self.root.config(menu=menubar)
+        about_menu = tk.Menu(menubar, tearoff=0)
+        menubar.add_cascade(label="About", menu=about_menu)
+        about_menu.add_command(
+            label="About imgbox",
+            command=self.create_about_window,
+        )
 
 
 def main():
