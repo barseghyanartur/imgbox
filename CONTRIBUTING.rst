@@ -103,7 +103,8 @@ For example:
 
 **Good to know:**
 
-- This library consists of a single ``imgbox`` module.
+- This library consists of a single ``snapbox`` module. Tests are located in
+  the ``tests`` module.
 
 **General list to go through:**
 
