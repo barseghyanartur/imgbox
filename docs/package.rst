@@ -5,7 +5,7 @@ Package
 .. toctree::
    :maxdepth: 20
 
-   fake
+   snapbox
 
 Indices and tables
 ==================

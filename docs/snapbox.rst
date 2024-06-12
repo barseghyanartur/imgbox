@@ -1,5 +1,5 @@
-fake module
-===========
+snapbox module
+==============
 
 .. automodule:: imgbox
    :members:
