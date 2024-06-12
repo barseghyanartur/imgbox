@@ -16,6 +16,14 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.1.1
+-----
+2024-06-13
+
+- Various UI improvements (add zoom controls).
+- Make the box line configurable (colour, thickness).
+- Add tests.
+
 0.1
 ---
 2024-06-12

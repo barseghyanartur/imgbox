@@ -1,13 +1,15 @@
 =======
-snapbox
+SnapBox
 =======
 .. External dependencies
 
+.. _tkinter: https://docs.python.org/3/library/tkinter.html
 .. _Pillow: https://python-pillow.org/
+.. _pipx: https://pipx.pypa.io/
 
 .. Internal references
 
-.. _snapbox: https://github.com/barseghyanartur/snapbox/
+.. _SnapBox: https://github.com/barseghyanartur/snapbox/
 .. _Read the Docs: http://snapbox.readthedocs.io/
 .. _Contributor guidelines: https://snapbox.readthedocs.io/en/latest/contributor_guidelines.html
 
@@ -43,13 +45,22 @@ Features
 
 Prerequisites
 =============
-Python 3.8+
+- Python 3.8+
+- `tkinter`_
+- `Pillow`_
 
 Installation
 ============
-pip
----
+Using `pipx`_
+-------------
+*Recommended*
 
+.. code-block:: sh
+
+    pipx install snapbox
+
+Using `pip`
+-----------
 .. code-block:: sh
 
     pip install snapbox
