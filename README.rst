@@ -1,40 +1,40 @@
 =======
 snapbox
 =======
-Draw boxes over images.
+.. External dependencies
 
 .. _Pillow: https://python-pillow.org/
 
 .. Internal references
 
-.. _imgbox: https://github.com/barseghyanartur/imgbox/
-.. _Read the Docs: http://imgbox.readthedocs.io/
-.. _Contributor guidelines: https://imgbox.readthedocs.io/en/latest/contributor_guidelines.html
+.. _snapbox: https://github.com/barseghyanartur/snapbox/
+.. _Read the Docs: http://snapbox.readthedocs.io/
+.. _Contributor guidelines: https://snapbox.readthedocs.io/en/latest/contributor_guidelines.html
 
-Minimalistic, standalone alternative fake data generator with no dependencies.
+Draw boxes over images.
 
-.. image:: https://img.shields.io/pypi/v/imgbox.svg
-   :target: https://pypi.python.org/pypi/imgbox
+.. image:: https://img.shields.io/pypi/v/snapbox.svg
+   :target: https://pypi.python.org/pypi/snapbox
    :alt: PyPI Version
 
-.. image:: https://img.shields.io/pypi/pyversions/imgbox.svg
-    :target: https://pypi.python.org/pypi/imgbox/
+.. image:: https://img.shields.io/pypi/pyversions/snapbox.svg
+    :target: https://pypi.python.org/pypi/snapbox/
     :alt: Supported Python versions
 
-.. image:: https://github.com/barseghyanartur/imgbox/actions/workflows/test.yml/badge.svg?branch=main
-   :target: https://github.com/barseghyanartur/imgbox/actions
+.. image:: https://github.com/barseghyanartur/snapbox/actions/workflows/test.yml/badge.svg?branch=main
+   :target: https://github.com/barseghyanartur/snapbox/actions
    :alt: Build Status
 
-.. image:: https://readthedocs.org/projects/imgbox/badge/?version=latest
+.. image:: https://readthedocs.org/projects/snapbox/badge/?version=latest
     :target: http://imgbox.readthedocs.io
     :alt: Documentation Status
 
 .. image:: https://img.shields.io/badge/license-MIT-blue.svg
-   :target: https://github.com/barseghyanartur/fake.py/#License
+   :target: https://github.com/barseghyanartur/snapbox/#License
    :alt: MIT
 
-.. image:: https://coveralls.io/repos/github/barseghyanartur/fake.py/badge.svg?branch=main&service=github
-    :target: https://coveralls.io/github/barseghyanartur/fake.py?branch=main
+.. image:: https://coveralls.io/repos/github/barseghyanartur/snapbox/badge.svg?branch=main&service=github
+    :target: https://coveralls.io/github/barseghyanartur/snapbox?branch=main
     :alt: Coverage
 
 Features
