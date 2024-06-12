@@ -26,7 +26,7 @@ Draw boxes over images.
    :alt: Build Status
 
 .. image:: https://readthedocs.org/projects/snapbox/badge/?version=latest
-    :target: http://imgbox.readthedocs.io
+    :target: http://snapbox.readthedocs.io
     :alt: Documentation Status
 
 .. image:: https://img.shields.io/badge/license-MIT-blue.svg
