@@ -13,7 +13,7 @@ SnapBox
 .. _Read the Docs: http://snapbox.readthedocs.io/
 .. _Contributor guidelines: https://snapbox.readthedocs.io/en/latest/contributor_guidelines.html
 
-Draw boxes over images.
+Put bounding boxes over images.
 
 .. image:: https://img.shields.io/pypi/v/snapbox.svg
    :target: https://pypi.python.org/pypi/snapbox
@@ -41,7 +41,8 @@ Draw boxes over images.
 
 Features
 ========
-- Draw boxes over images.
+- Put bounding boxes over images.
+- Export altered images.
 
 Prerequisites
 =============
