@@ -2,7 +2,7 @@
 name = "snapbox"
 description = "Draw boxes over images."
 readme = "README.rst"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = ["Pillow"]
 authors = [
     {name = "Artur Barseghyan", email = "artur.barseghyan@gmail.com"},
@@ -144,7 +144,6 @@ ignore-path = [
 ]
 
 [tool.pytest.ini_options]
-minversion = "0.7.1"
 addopts = [
     "-ra",
     "-vvv",

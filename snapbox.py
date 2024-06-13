@@ -4,7 +4,7 @@ from tkinter import colorchooser, filedialog, messagebox, ttk
 from PIL import Image, ImageDraw, ImageTk
 
 __title__ = "snapbox"
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2024 Artur Barseghyan"
 __license__ = "MIT"
@@ -14,7 +14,7 @@ __all__ = ("SnapBoxApp",)
 class SnapBoxApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("SnapBox: Draw boxes over image")
+        self.root.title("SnapBox: Put bounding bounding boxes over images")
         self.tkimg = None
         self.setup_menu()
 
@@ -84,8 +84,8 @@ class SnapBoxApp:
         )
         self.zoom_out_button.grid(row=2, column=2, sticky="ew", padx=5)
 
-        # Rectangle specification frame
-        self.rect_frame = ttk.LabelFrame(root, text="Add/Edit Rectangle")
+        # Bounding box specification frame
+        self.rect_frame = ttk.LabelFrame(root, text="Add/Edit bounding box")
         self.rect_frame.grid(
             row=3, column=0, columnspan=3, sticky="ew", padx=10, pady=10
         )
@@ -94,7 +94,7 @@ class SnapBoxApp:
         self.coord_frame = ttk.LabelFrame(self.rect_frame, text="Coordinates")
         self.coord_frame.grid(row=0, column=0, padx=10, pady=10, sticky="ew")
 
-        # Dropdown for selecting rectangle format
+        # Dropdown for selecting bounding box format
         self.format_var = tk.StringVar()
         self.format_choices = {
             "x, y, width, height",
@@ -153,15 +153,15 @@ class SnapBoxApp:
         )
         self.color_display.grid(row=0, column=3, sticky="w", padx=5)
 
-        # Add/Update Rectangle button
+        # Add/Update bounding box button
         self.add_button = ttk.Button(
             self.rect_frame,
-            text="Add/Update Rectangle",
+            text="Add/Update bounding box",
             command=self.add_update_rectangle,
         )
         self.add_button.grid(row=0, column=2, padx=10, sticky="w")
 
-        # Button to generate rectangles on the image
+        # Button to generate bounding boxes on the image
         self.generate_button = ttk.Button(
             root, text="Generate on Image", command=self.generate_rectangles
         )
@@ -174,7 +174,7 @@ class SnapBoxApp:
             padx=10,
         )
 
-        # Listbox for rectangles
+        # Listbox for bounding boxes
         self.listbox = tk.Listbox(
             root,
             height=6,
@@ -293,7 +293,7 @@ class SnapBoxApp:
         except ValueError:
             messagebox.showerror(
                 "Error",
-                "Enter integers for box dimensions and thickness.",
+                "Enter integers for bounding box dimensions and thickness.",
             )
 
     def delete_rectangle(self):
@@ -304,7 +304,7 @@ class SnapBoxApp:
         except Exception:
             messagebox.showerror(
                 "Error",
-                "Select a rectangle to delete.",
+                "Select a bounding box to delete.",
             )
 
     def clear_entries(self):
@@ -357,8 +357,8 @@ class SnapBoxApp:
 
     def create_about_window(self):
         about_window = tk.Toplevel(self.root)
-        about_window.title("About imgbox")
-        about_window.geometry("400x300")
+        about_window.title("About SnapBox")
+        about_window.geometry("600x400")
 
         tab_control = ttk.Notebook(about_window)
 
@@ -369,8 +369,8 @@ class SnapBoxApp:
         about_text.insert(
             "end",
             (
-                "SnapBox is a simple graphical tool for drawing rectangles "
-                "on images."
+                "SnapBox is a simple graphical tool for putting bounding "
+                "boxes on images."
             ),
         )
         about_text.config(state="disabled")
@@ -383,8 +383,9 @@ class SnapBoxApp:
         author_text.insert(
             "end",
             (
-                "Developed by Artur Barseghyan. For feedback and support, "
-                "see https://github.com/barseghyanartur/snapbox#support."
+                "Developed by Artur Barseghyan. \n"
+                "For feedback and support, see GitHub: \n"
+                "https://github.com/barseghyanartur/snapbox#support."
             ),
         )
         author_text.config(state="disabled")
@@ -397,9 +398,9 @@ class SnapBoxApp:
         license_text.insert(
             "end",
             (
-                "This software is released under the MIT License. "
-                "See https://github.com/barseghyanartur/snapbox#license for"
-                "more information."
+                "This software is released under the MIT License. \n"
+                "See GitHub for more information: \n"
+                "https://github.com/barseghyanartur/snapbox#license"
             ),
         )
         license_text.config(state="disabled")
@@ -410,12 +411,36 @@ class SnapBoxApp:
     def setup_menu(self):
         menubar = tk.Menu(self.root)
         self.root.config(menu=menubar)
+
+        # File menu
+        file_menu = tk.Menu(menubar, tearoff=0)
+        menubar.add_cascade(label="File", menu=file_menu)
+        file_menu.add_command(
+            label="Save As",
+            command=self.save_as,
+        )
+
+        # About menu
         about_menu = tk.Menu(menubar, tearoff=0)
         menubar.add_cascade(label="About", menu=about_menu)
         about_menu.add_command(
-            label="About imgbox",
+            label="About SnapBox",
             command=self.create_about_window,
         )
+
+    def save_as(self):
+        if self.img:
+            file_path = filedialog.asksaveasfilename(
+                defaultextension=".png",
+                filetypes=[("PNG files", "*.png"), ("All files", "*.*")],
+            )
+            if file_path:
+                self.img.save(file_path)
+                messagebox.showinfo(
+                    "Image Saved", f"Image saved as {file_path}"
+                )
+        else:
+            messagebox.showerror("No Image", "No image to save.")
 
 
 def main():
